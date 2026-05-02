@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Cheat‑sheet Linux – Version 3.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root{
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --c-bg:             #f4f5f7;
+  --c-surface:        #ffffff;
+  --c-surface-hover:  #f8f9fb;
+  --c-border:         #e0e4ea;
+  --c-border-strong:  #c8cdd6;
+
+  --c-text-primary:   #1a1d23;
+  --c-text-secondary: #5a6070;
+  --c-text-tertiary:  #8a93a4;
+
+  --c-accent:         #2563eb;
+  --c-accent-bg:      #eff4ff;
+
+  /* FIX 2 — couleurs sémantiques pour types de commandes */
+  --c-cmd-nav:        #2563eb;   /* navigation: bleu */
+  --c-cmd-danger:     #dc2626;   /* destructif: rouge */
+  --c-cmd-system:     #7c3aed;   /* système/admin: violet */
+  --c-cmd-network:    #0891b2;   /* réseau: cyan */
+  --c-cmd-file:       #059669;   /* fichiers: vert */
+  --c-cmd-default:    #374151;   /* défaut: gris foncé */
+
+  --c-danger-bg:      #fff5f5;
+  --c-danger-border:  #fecaca;
+  --c-system-bg:      #f5f3ff;
+  --c-system-border:  #ddd6fe;
+  --c-network-bg:     #f0fdff;
+  --c-network-border: #a5f3fc;
+  --c-file-bg:        #f0fdf4;
+  --c-file-border:    #a7f3d0;
+
+  --c-fav-bg:         #fffbeb;
+  --c-fav-border:     #fde68a;
+
+  --c-scroll-thumb:   #d1d5db;
+  --radius-sm:        6px;
+  --radius-md:        10px;
+  --radius-lg:        14px;
+  --shadow-card:      0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-hover:     0 6px 20px rgba(0,0,0,.1);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --c-bg:             #0f1117;
+    --c-surface:        #1a1d27;
+    --c-surface-hover:  #22263a;
+    --c-border:         #2a2e3d;
+    --c-border-strong:  #3a3f54;
+    --c-text-primary:   #e8eaf0;
+    --c-text-secondary: #8a93a4;
+    --c-text-tertiary:  #555f72;
+    --c-accent:         #4d8bf5;
+    --c-accent-bg:      #1a2540;
+    --c-cmd-nav:        #4d8bf5;
+    --c-cmd-danger:     #f87171;
+    --c-cmd-system:     #a78bfa;
+    --c-cmd-network:    #22d3ee;
+    --c-cmd-file:       #34d399;
+    --c-cmd-default:    #9ca3af;
+    --c-danger-bg:      #1f0a0a;
+    --c-danger-border:  #7f1d1d;
+    --c-system-bg:      #13101f;
+    --c-system-border:  #4c1d95;
+    --c-network-bg:     #061f24;
+    --c-network-border: #164e63;
+    --c-file-bg:        #061f14;
+    --c-file-border:    #064e3b;
+    --c-fav-bg:         #1c1507;
+    --c-fav-border:     #78350f;
+    --c-scroll-thumb:   #374151;
+    --shadow-card:      0 1px 3px rgba(0,0,0,.3);
+    --shadow-hover:     0 6px 20px rgba(0,0,0,.4);
+  }
+}
+
+[data-theme="light"]{
+  --c-bg:#f4f5f7; --c-surface:#ffffff; --c-surface-hover:#f8f9fb;
+  --c-border:#e0e4ea; --c-border-strong:#c8cdd6;
+  --c-text-primary:#1a1d23; --c-text-secondary:#5a6070; --c-text-tertiary:#8a93a4;
+  --c-accent:#2563eb; --c-accent-bg:#eff4ff;
+  --c-cmd-nav:#2563eb; --c-cmd-danger:#dc2626; --c-cmd-system:#7c3aed;
+  --c-cmd-network:#0891b2; --c-cmd-file:#059669; --c-cmd-default:#374151;
+  --c-danger-bg:#fff5f5; --c-danger-border:#fecaca;
+  --c-system-bg:#f5f3ff; --c-system-border:#ddd6fe;
+  --c-network-bg:#f0fdff; --c-network-border:#a5f3fc;
+  --c-file-bg:#f0fdf4; --c-file-border:#a7f3d0;
+  --c-fav-bg:#fffbeb; --c-fav-border:#fde68a;
+  --c-scroll-thumb:#d1d5db;
+  --shadow-card:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-hover:0 6px 20px rgba(0,0,0,.1);
+}
+[data-theme="dark"]{
+  --c-bg:#0f1117; --c-surface:#1a1d27; --c-surface-hover:#22263a;
+  --c-border:#2a2e3d; --c-border-strong:#3a3f54;
+  --c-text-primary:#e8eaf0; --c-text-secondary:#8a93a4; --c-text-tertiary:#555f72;
+  --c-accent:#4d8bf5; --c-accent-bg:#1a2540;
+  --c-cmd-nav:#4d8bf5; --c-cmd-danger:#f87171; --c-cmd-system:#a78bfa;
+  --c-cmd-network:#22d3ee; --c-cmd-file:#34d399; --c-cmd-default:#9ca3af;
+  --c-danger-bg:#1f0a0a; --c-danger-border:#7f1d1d;
+  --c-system-bg:#13101f; --c-system-border:#4c1d95;
+  --c-network-bg:#061f24; --c-network-border:#164e63;
+  --c-file-bg:#061f14; --c-file-border:#064e3b;
+  --c-fav-bg:#1c1507; --c-fav-border:#78350f;
+  --c-scroll-thumb:#374151;
+  --shadow-card:0 1px 3px rgba(0,0,0,.3);
+  --shadow-hover:0 6px 20px rgba(0,0,0,.4);
+}
+
+/* ── GLOBAL ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-sans);
+  background:var(--c-bg);
+  color:var(--c-text-primary);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--c-scroll-thumb);border-radius:4px;}
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.wrapper{
+  display:flex;
+  max-width:1440px;
+  margin:0 auto;
+  padding:1.25rem;
+  gap:1.25rem;
+}
+
+/* FIX 1 — sidebar hiérarchisée avec groupes */
+.toc{
+  flex:0 0 220px;
+  position:sticky;
+  top:1.25rem;
+  align-self:start;
+  max-height:calc(100vh - 2.5rem);
+  overflow-y:auto;
+  background:var(--c-surface);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-lg);
+  padding:1rem;
+}
+.toc-header{
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--c-text-tertiary);
+  padding:.25rem 0 .5rem;
+  border-bottom:1px solid var(--c-border);
+  margin-bottom:.75rem;
+}
+.toc-group{margin-bottom:1rem;}
+.toc-group-label{
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--c-text-tertiary);
+  padding:.2rem .5rem;
+  margin-bottom:.2rem;
+}
+.toc ul{list-style:none;}
+.toc a{
+  text-decoration:none;
+  color:var(--c-text-secondary);
+  font-size:.82rem;
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.3rem .5rem;
+  border-radius:var(--radius-sm);
+  transition:background .15s, color .15s;
+}
+.toc a .toc-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--c-border-strong);
+  flex-shrink:0;
+  transition:background .15s;
+}
+.toc a:hover,.toc a.active{
+  color:var(--c-accent);
+  background:var(--c-accent-bg);
+}
+.toc a.active .toc-dot,.toc a:hover .toc-dot{background:var(--c-accent);}
+.toc a.active{font-weight:500;}
+
+@media(max-width:768px){.toc{display:none;}}
+
+main{flex:1;min-width:0;}
+
+/* ── TOOLBAR — FIX 4 (loupe) + FIX 5 (cohérence) ──────── */
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin-bottom:1.5rem;
+  align-items:center;
+  background:var(--c-surface);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-lg);
+  padding:.75rem 1rem;
+}
+.search-wrap{
+  flex:1;
+  min-width:180px;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.search-wrap svg{
+  position:absolute;
+  left:.65rem;
+  width:16px;height:16px;
+  stroke:var(--c-text-tertiary);
+  pointer-events:none;
+}
+.toolbar input[type="text"]{
+  width:100%;
+  padding:.5rem .75rem .5rem 2.2rem;
+  font-size:.9rem;
+  font-family:var(--font-sans);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-md);
+  background:var(--c-bg);
+  color:var(--c-text-primary);
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.toolbar input[type="text"]:focus{
+  border-color:var(--c-accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--c-accent) 15%, transparent);
+}
+.toolbar input[type="text"]::placeholder{color:var(--c-text-tertiary);}
+
+/* FIX 5 — contrôles cohérents */
+.toolbar-controls{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  flex-shrink:0;
+}
+.fav-toggle{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.45rem .75rem;
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-md);
+  background:var(--c-bg);
+  color:var(--c-text-secondary);
+  font-size:.82rem;
+  font-family:var(--font-sans);
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  user-select:none;
+}
+.fav-toggle input{display:none;}
+.fav-toggle svg{width:14px;height:14px;stroke:var(--c-text-tertiary);fill:none;transition:all .15s;}
+.fav-toggle.active{
+  border-color:var(--c-fav-border);
+  background:var(--c-fav-bg);
+  color:#92400e;
+}
+.fav-toggle.active svg{stroke:#d97706;fill:#d97706;}
+
+/* FIX 5 — select stylisé */
+.theme-select-wrap{position:relative;}
+.theme-select-wrap select{
+  appearance:none;
+  padding:.45rem 1.8rem .45rem .75rem;
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-md);
+  background:var(--c-bg);
+  color:var(--c-text-secondary);
+  font-size:.82rem;
+  font-family:var(--font-sans);
+  cursor:pointer;
+  outline:none;
+}
+.theme-select-wrap::after{
+  content:'';
+  position:absolute;right:.6rem;top:50%;
+  transform:translateY(-50%);
+  width:0;height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid var(--c-text-tertiary);
+  pointer-events:none;
+}
+#result-info{
+  font-size:.8rem;
+  color:var(--c-text-tertiary);
+  white-space:nowrap;
+  padding:.45rem .5rem;
+}
+
+/* ── SECTIONS ──────────────────────────────────────────────── */
+section{margin-bottom:2.5rem;}
+section h2{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  font-size:1rem;
+  font-weight:500;
+  color:var(--c-text-primary);
+  margin-bottom:.85rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid var(--c-border);
+}
+.section-badge{
+  font-size:.65rem;
+  font-weight:500;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  padding:.15rem .45rem;
+  border-radius:4px;
+}
+.copy-section{
+  margin-left:auto;
+  display:flex;align-items:center;gap:.3rem;
+  padding:.25rem .5rem;
+  font-size:.75rem;
+  font-family:var(--font-sans);
+  background:transparent;
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-sm);
+  color:var(--c-text-tertiary);
+  cursor:pointer;
+  transition:all .15s;
+}
+.copy-section:hover{color:var(--c-accent);border-color:var(--c-accent);}
+.copy-section svg{width:12px;height:12px;stroke:currentColor;fill:none;}
+
+/* ── GRID CARDS — FIX 7 (hauteur auto) ─────────────────────── */
+.cmd-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:.75rem;
+  align-items:start; /* FIX 7 — hauteur adaptative par ligne */
+}
+
+/* ── CARD — FIX 6 (contraste) + FIX 7 (hauteur) ──────────── */
+.cmd-card{
+  background:var(--c-surface);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-md);
+  padding:.85rem 1rem;
+  display:flex;
+  flex-direction:column;
+  gap:.3rem;
+  position:relative;
+  /* FIX 6 — shadow pour dégager du fond */
+  box-shadow:var(--shadow-card);
+  opacity:0;
+  transform:translateY(12px);
+  transition:transform .25s ease, opacity .25s ease, box-shadow .2s, border-color .15s;
+  will-change:transform,opacity;
+  /* FIX 7 — hauteur auto, pas de height fixe */
+  height:auto;
+}
+.cmd-card.visible{opacity:1;transform:translateY(0);}
+.cmd-card:hover{
+  box-shadow:var(--shadow-hover);
+  border-color:var(--c-border-strong);
+  transform:translateY(-2px);
+}
+
+/* FIX 2 — cartes dangereuses */
+.cmd-card.danger{
+  background:var(--c-danger-bg);
+  border-color:var(--c-danger-border);
+}
+.cmd-card.system-admin{
+  background:var(--c-system-bg);
+  border-color:var(--c-system-border);
+}
+.cmd-card.network-type{
+  background:var(--c-network-bg);
+  border-color:var(--c-network-border);
+}
+.cmd-card.file-type{
+  background:var(--c-file-bg);
+  border-color:var(--c-file-border);
+}
+.cmd-card.favorite{
+  background:var(--c-fav-bg);
+  border-color:var(--c-fav-border);
+}
+
+/* badge de type */
+.cmd-type-badge{
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  padding:.1rem .4rem;
+  border-radius:3px;
+  display:inline-block;
+  width:fit-content;
+}
+
+/* ligne cmd : [texte+copie] ··spacer·· [étoile] */
+.cmd-row{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.cmd{
+  font-family:var(--font-mono);
+  font-weight:500;
+  font-size:.88rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.25rem;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:0;
+  text-align:left;
+  /* couleur définie par style inline js */
+}
+.cmd-text{word-break:break-all;}
+.spacer{flex:1;}
+.icon-copy{
+  width:12px;height:12px;
+  stroke:currentColor;fill:none;
+  opacity:.35;flex-shrink:0;
+  transition:opacity .15s;
+}
+.cmd:hover .icon-copy{opacity:.85;}
+
+.desc{font-size:.82rem;color:var(--c-text-secondary);line-height:1.4;}
+.example{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  color:var(--c-text-tertiary);
+  word-break:break-all;
+}
+
+/* FIX 3 — bouton favori inline dans .cmd */
+.fav-btn{
+  background:none;
+  border:none;
+  outline:none;
+  cursor:pointer;
+  padding:0;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  line-height:0;
+}
+.icon-star{
+  width:13px;height:13px;
+  fill:none;
+  stroke:var(--c-border-strong);
+  stroke-width:2;
+  transition:fill .2s,stroke .2s;
+  display:block;
+}
+.fav-btn:hover .icon-star{stroke:var(--c-text-secondary);}
+.fav-btn.favorited .icon-star{fill:#f59e0b;stroke:#f59e0b;}
+.fav-btn.favorited:hover .icon-star{stroke:#d97706;}
+/* FIX 3 — animation au clic */
+@keyframes star-pop{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.4);}
+  70%{transform:scale(.9);}
+  100%{transform:scale(1.15);}
+}
+.fav-btn.pop .icon-star{animation:star-pop .3s ease forwards;}
+
+/* ── TIP CARDS ──────────────────────────────────────────────── */
+.tip-card{
+  background:var(--c-surface);
+  border:1px solid var(--c-border);
+  border-left:3px solid var(--c-accent);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:.6rem .9rem;
+  margin:.4rem 0;
+  font-size:.83rem;
+  color:var(--c-text-secondary);
+  box-shadow:var(--shadow-card);
+}
+.tip-card strong{color:var(--c-text-primary);}
+
+/* ── TOAST ──────────────────────────────────────────────────── */
+#toast{
+  position:fixed;
+  left:50%;bottom:2rem;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--c-text-primary);
+  color:var(--c-surface);
+  padding:.5rem 1.1rem;
+  border-radius:var(--radius-md);
+  font-size:.82rem;
+  font-family:var(--font-sans);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s, transform .2s;
+  white-space:nowrap;
+  z-index:9999;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.error{background:#dc2626;}
+
+/* ── BACK TO TOP ─────────────────────────────────────────────── */
+#back-top{
+  position:fixed;right:1.5rem;bottom:1.5rem;
+  width:2.4rem;height:2.4rem;
+  background:var(--c-accent);color:#fff;
+  border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity .3s, transform .2s;
+}
+#back-top svg{width:14px;height:14px;stroke:#fff;fill:none;}
+#back-top.show{opacity:1;pointer-events:auto;}
+#back-top:hover{transform:translateY(-2px);}
+
+/* highlight */
+mark{background:rgba(245,158,11,.25);border-radius:2px;color:inherit;}
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+
+  <!-- ================= TOC — FIX 1 (groupes) ================= -->
+  <nav class="toc" aria-label="Table des matières">
+    <div class="toc-header">Sections</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <!-- ================= MAIN ================= -->
+  <main>
+    <!-- ===== TOOLBAR — FIX 4 + FIX 5 ===== -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" stroke-width="2" fill="none">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="search" placeholder="Recherche… (Ctrl + K)" autocomplete="off">
+      </div>
+      <div class="toolbar-controls">
+        <label class="fav-toggle" id="fav-label" title="Afficher uniquement les favoris">
+          <input type="checkbox" id="fav-only">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          Favoris
+        </label>
+        <div class="theme-select-wrap">
+          <select id="theme-select" aria-label="Thème">
+            <option value="system">Système</option>
+            <option value="light">Clair</option>
+            <option value="dark">Sombre</option>
+          </select>
+        </div>
+        <div id="result-info" aria-live="polite">0 commande(s)</div>
+      </div>
+    </div>
+
+    <div id="sections"></div>
+
+    <!-- Static sections -->
+    <section id="shortcuts">
+      <h2>Raccourcis clavier
+        <button class="copy-section" title="Copier toute la section">
+          <svg viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copier
+        </button>
+      </h2>
+      <div class="tip-card"><strong>Tab</strong> — autocomplétion des commandes et fichiers</div>
+      <div class="tip-card"><strong>Ctrl + C</strong> — annuler une commande en cours</div>
+      <div class="tip-card"><strong>Ctrl + L</strong> — effacer l'écran</div>
+      <div class="tip-card"><strong>Ctrl + Z</strong> — mettre une commande en pause</div>
+      <div class="tip-card"><strong>Flèche haut/bas</strong> — naviguer dans l'historique</div>
+    </section>
+
+    <section id="rules">
+      <h2>Règles importantes</h2>
+      <div class="tip-card"><strong>Linux est sensible à la casse</strong> — Documents ≠ documents</div>
+      <div class="tip-card"><strong>Pas de corbeille</strong> — <code>rm</code> supprime définitivement</div>
+      <div class="tip-card"><strong>Ne jamais copier‑coller</strong> dans le terminal sans vérifier</div>
+      <div class="tip-card"><strong>sudo</strong> — nécessaire pour les dossiers système</div>
+      <div class="tip-card"><strong>root (#)</strong> — super‑admin, à utiliser avec précaution</div>
+      <div class="tip-card"><strong>~/</strong> — raccourci pour <code>/home/kali</code></div>
+    </section>
+
+    <section id="bash-tips">
+      <h2>Astuces Bash avancées</h2>
+      <div class="tip-card"><strong>commande1 && commande2</strong> — exécute <code>commande2</code> seulement si <code>commande1</code> réussit</div>
+      <div class="tip-card"><strong>commande1 || commande2</strong> — exécute <code>commande2</code> seulement si <code>commande1</code> échoue</div>
+      <div class="tip-card"><strong>commande &amp;</strong> — lancer en arrière‑plan</div>
+      <div class="tip-card"><strong>commande > fichier</strong> — rediriger la sortie (écrase)</div>
+      <div class="tip-card"><strong>commande >> fichier</strong> — rediriger la sortie (ajoute)</div>
+      <div class="tip-card"><strong>commande 2&gt; erreurs.txt</strong> — rediriger les erreurs</div>
+      <div class="tip-card"><strong>!!</strong> — répéter la dernière commande</div>
+      <div class="tip-card"><strong>sudo !!</strong> — répéter la dernière commande en admin</div>
+    </section>
+  </main>
+</div>
+
+<div id="toast" role="alert" aria-live="assertive"></div>
+<button id="back-top" aria-label="Retour en haut">
+  <svg viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+/* ==============================================================
+   Données
+   ============================================================== */
+const sections = [
+  /* groupe: Système de fichiers */
+  {id:'navigation',    title:'Navigation',           group:'Fichiers'},
+  {id:'files',          title:'Fichiers et dossiers', group:'Fichiers'},
+  {id:'hidden-files',  title:'Fichiers cachés',       group:'Fichiers'},
+  {id:'permissions',   title:'Permissions',           group:'Fichiers'},
+  {id:'file-edit',      title:'Lecture et édition',   group:'Fichiers'},
+  /* groupe: Recherche */
+  {id:'advanced-search',title:'Recherche avancée',   group:'Recherche'},
+  /* groupe: Réseau */
+  {id:'network',        title:'Réseau',               group:'Réseau'},
+  {id:'network-advanced',title:'Réseau avancé',       group:'Réseau'},
+  /* groupe: Système */
+  {id:'system',         title:'Système',              group:'Système'},
+  {id:'process-services',title:'Processus et services',group:'Système'},
+  {id:'users-groups',   title:'Utilisateurs et groupes',group:'Système'},
+  {id:'logs-monitoring',title:'Logs et surveillance', group:'Système'},
+  {id:'env-vars',       title:'Variables d\'env.',    group:'Système'},
+  /* groupe: Outils */
+  {id:'packages',       title:'Paquets',              group:'Outils'},
+  {id:'scripts',        title:'Scripts Bash',         group:'Outils'},
+  {id:'comparisons',   title:'Comparaisons',          group:'Outils'},
+  {id:'backup',         title:'Sauvegarde',           group:'Outils'},
+];
+
+/* FIX 2 — classification sémantique des commandes */
+const TYPE = {
+  NAV:'nav', DANGER:'danger', SYSTEM:'system', NETWORK:'network', FILE:'file', DEFAULT:'default'
+};
+const DANGER_CMDS = ['rm fichier','rm -rf dossier','kill PID','kill -9 PID','killall nom','sudo su','deluser nom','shutdown now','reboot','history -c'];
+const SYSTEM_CMDS = ['sudo commande','sudo apt update','sudo apt upgrade','sudo apt install','sudo apt remove','passwd','adduser nom','chmod +x fichier','chmod 777 fichier','chmod 600 fichier','chown user fichier','sudo su'];
+const NETWORK_CMDS = ['ifconfig','ip a','ping adresse','nmap adresse','netstat -tulpn','wget url','curl url','ssh user@ip','ping -c 4 adresse','traceroute adresse','nmap -sV adresse','nmap -A adresse','nmap -p 80 adresse','curl -I url','scp fichier user@ip:/dest'];
+
+function getCardType(cmd, section){
+  if (DANGER_CMDS.some(d => cmd.startsWith(d.split(' ')[0]+' ') || cmd === d.split(' ')[0])){
+    if (cmd.includes('rm') || cmd.includes('kill') || cmd.includes('shutdown') || cmd.includes('reboot') || cmd.includes('deluser') || cmd.includes('history -c')) return TYPE.DANGER;
+  }
+  if (section === 'network' || section === 'network-advanced') return TYPE.NETWORK;
+  if (section === 'system' || section === 'permissions' || section === 'users-groups' || section === 'process-services') return TYPE.SYSTEM;
+  if (section === 'files' || section === 'file-edit' || section === 'hidden-files' || section === 'backup' || section === 'advanced-search') return TYPE.FILE;
+  if (section === 'navigation') return TYPE.NAV;
+  return TYPE.DEFAULT;
+}
+
+const TYPE_COLORS = {
+  [TYPE.NAV]:     {cls:'', color:'var(--c-cmd-nav)',     label:''},
+  [TYPE.DANGER]:  {cls:'danger',       color:'var(--c-cmd-danger)',    label:'⚠ Destructif'},
+  [TYPE.SYSTEM]:  {cls:'system-admin', color:'var(--c-cmd-system)',   label:'Admin'},
+  [TYPE.NETWORK]: {cls:'network-type', color:'var(--c-cmd-network)',  label:'Réseau'},
+  [TYPE.FILE]:    {cls:'file-type',    color:'var(--c-cmd-file)',     label:'Fichier'},
+  [TYPE.DEFAULT]: {cls:'',            color:'var(--c-cmd-default)',   label:''},
+};
+const BADGE_STYLES = {
+  [TYPE.DANGER]:  'background:#fee2e2;color:#991b1b;',
+  [TYPE.SYSTEM]:  'background:#ede9fe;color:#5b21b6;',
+  [TYPE.NETWORK]: 'background:#cffafe;color:#155e75;',
+  [TYPE.FILE]:    'background:#d1fae5;color:#065f46;',
+};
+
+const commands = [
+  {id:'nav-1',section:'navigation',cmd:'pwd',desc:'Voir où je suis',example:'/home/kali'},
+  {id:'nav-2',section:'navigation',cmd:'ls',desc:'Lister les fichiers',example:'Desktop Documents…'},
+  {id:'nav-3',section:'navigation',cmd:'ls -la',desc:'Lister avec détails et fichiers cachés',example:'ls -la'},
+  {id:'nav-4',section:'navigation',cmd:'cd dossier',desc:'Entrer dans un dossier',example:'cd Desktop'},
+  {id:'nav-5',section:'navigation',cmd:'cd ..',desc:'Remonter d\'un dossier',example:'→ revient en arrière'},
+  {id:'nav-6',section:'navigation',cmd:'cd',desc:'Retourner à l\'accueil',example:'/home/kali'},
+  {id:'nav-7',section:'navigation',cmd:'cd /',desc:'Aller à la racine du système',example:'/'},
+  {id:'nav-8',section:'navigation',cmd:'cd ~',desc:'Aller au dossier personnel',example:'/home/kali'},
+
+  {id:'file-1',section:'files',cmd:'mkdir nom',desc:'Créer un dossier',example:'mkdir mon_dossier'},
+  {id:'file-2',section:'files',cmd:'mkdir -p a/b/c',desc:'Créer dossiers imbriqués',example:'mkdir -p dossier/sous/sous2'},
+  {id:'file-3',section:'files',cmd:'touch nom',desc:'Créer un fichier vide',example:'touch fichier.txt'},
+  {id:'file-4',section:'files',cmd:'cat fichier',desc:'Lire un fichier',example:'cat fichier.txt'},
+  {id:'file-5',section:'files',cmd:'echo "texte"',desc:'Écrire dans un fichier',example:'echo "salut" > fichier.txt'},
+  {id:'file-6',section:'files',cmd:'echo "texte" >>',desc:'Ajouter à la fin d\'un fichier',example:'echo "ligne2" >> fichier.txt'},
+  {id:'file-7',section:'files',cmd:'rm fichier',desc:'Supprimer un fichier',example:'rm fichier.txt'},
+  {id:'file-8',section:'files',cmd:'rm -rf dossier',desc:'Supprimer un dossier (irréversible)',example:'rm -rf mon_dossier'},
+  {id:'file-9',section:'files',cmd:'mv ancien nouveau',desc:'Déplacer ou renommer',example:'mv a.txt b.txt'},
+  {id:'file-10',section:'files',cmd:'cp source dest',desc:'Copier un fichier',example:'cp a.txt b.txt'},
+  {id:'file-11',section:'files',cmd:'cp -r dossier dest',desc:'Copier un dossier entier',example:'cp -r dossier/ backup/'},
+  {id:'file-12',section:'files',cmd:'find / -name',desc:'Chercher un fichier',example:'find / -name fichier.txt'},
+  {id:'file-13',section:'files',cmd:'locate nom',desc:'Trouver un fichier rapidement',example:'locate passwords.txt'},
+  {id:'file-14',section:'files',cmd:'file nom',desc:'Voir le type d\'un fichier',example:'file image.png'},
+  {id:'file-15',section:'files',cmd:'wc -l fichier',desc:'Compter les lignes',example:'wc -l fichier.txt'},
+  {id:'file-16',section:'files',cmd:'head fichier',desc:'Voir les 10 premières lignes',example:'head fichier.txt'},
+  {id:'file-17',section:'files',cmd:'tail fichier',desc:'Voir les 10 dernières lignes',example:'tail fichier.txt'},
+  {id:'file-18',section:'files',cmd:'grep "mot" fichier',desc:'Chercher un mot dans un fichier',example:'grep "password" fichier.txt'},
+
+  {id:'perm-1',section:'permissions',cmd:'chmod +x fichier',desc:'Rendre exécutable',example:'chmod +x script.sh'},
+  {id:'perm-2',section:'permissions',cmd:'chmod 777 fichier',desc:'Tous les droits à tous',example:'chmod 777 fichier.txt'},
+  {id:'perm-3',section:'permissions',cmd:'chmod 600 fichier',desc:'Lecture/écriture pour moi seul',example:'chmod 600 secret.txt'},
+  {id:'perm-4',section:'permissions',cmd:'chown user fichier',desc:'Changer le propriétaire',example:'chown kali fichier.txt'},
+  {id:'perm-5',section:'permissions',cmd:'sudo commande',desc:'Exécuter en admin',example:'sudo apt update'},
+  {id:'perm-6',section:'permissions',cmd:'sudo su',desc:'Devenir root (privilèges max)',example:'→ # à la place de $'},
+
+  {id:'net-1',section:'network',cmd:'ifconfig',desc:'Voir mon adresse IP',example:'inet 192.168.x.x'},
+  {id:'net-2',section:'network',cmd:'ip a',desc:'Voir les interfaces réseau',example:'ip a'},
+  {id:'net-3',section:'network',cmd:'ping adresse',desc:'Tester une connexion',example:'ping google.com'},
+  {id:'net-4',section:'network',cmd:'nmap adresse',desc:'Scanner les ports d\'une IP',example:'nmap 192.168.1.1'},
+  {id:'net-5',section:'network',cmd:'netstat -tulpn',desc:'Voir les ports ouverts',example:'netstat -tulpn'},
+  {id:'net-6',section:'network',cmd:'wget url',desc:'Télécharger un fichier',example:'wget https://site.com/fichier'},
+  {id:'net-7',section:'network',cmd:'curl url',desc:'Faire une requête web',example:'curl https://site.com'},
+  {id:'net-8',section:'network',cmd:'ssh user@ip',desc:'Se connecter à distance',example:'ssh kali@192.168.1.1'},
+
+  {id:'sys-1',section:'system',cmd:'uname -a',desc:'Infos sur le système',example:'Linux kali 6.x...'},
+  {id:'sys-2',section:'system',cmd:'whoami',desc:'Voir mon nom d\'utilisateur',example:'kali'},
+  {id:'sys-3',section:'system',cmd:'id',desc:'Voir mon identifiant et groupe',example:'uid=1000(kali)'},
+  {id:'sys-4',section:'system',cmd:'ps aux',desc:'Voir les processus en cours',example:'ps aux'},
+  {id:'sys-5',section:'system',cmd:'kill PID',desc:'Arrêter un processus',example:'kill 1234'},
+  {id:'sys-6',section:'system',cmd:'top',desc:'Voir l\'utilisation CPU/RAM',example:'top'},
+  {id:'sys-7',section:'system',cmd:'df -h',desc:'Voir l\'espace disque',example:'80G disponible'},
+  {id:'sys-8',section:'system',cmd:'free -h',desc:'Voir la RAM disponible',example:'2G total'},
+  {id:'sys-9',section:'system',cmd:'history',desc:'Voir l\'historique des commandes',example:'history'},
+  {id:'sys-10',section:'system',cmd:'clear',desc:'Effacer l\'écran',example:'clear'},
+  {id:'sys-11',section:'system',cmd:'reboot',desc:'Redémarrer le système',example:'reboot'},
+  {id:'sys-12',section:'system',cmd:'shutdown now',desc:'Éteindre le système',example:'shutdown now'},
+
+  {id:'pkg-1',section:'packages',cmd:'sudo apt update',desc:'Mettre à jour la liste des paquets',example:'sudo apt update'},
+  {id:'pkg-2',section:'packages',cmd:'sudo apt upgrade',desc:'Mettre à jour tous les programmes',example:'sudo apt upgrade'},
+  {id:'pkg-3',section:'packages',cmd:'sudo apt install',desc:'Installer un programme',example:'sudo apt install nmap'},
+  {id:'pkg-4',section:'packages',cmd:'sudo apt remove',desc:'Désinstaller un programme',example:'sudo apt remove nmap'},
+
+  {id:'scr-1',section:'scripts',cmd:'nano fichier.sh',desc:'Créer/éditer un script',example:'nano mon_script.sh'},
+  {id:'scr-2',section:'scripts',cmd:'bash fichier.sh',desc:'Lancer un script',example:'bash mon_script.sh'},
+  {id:'scr-3',section:'scripts',cmd:'#!/bin/bash',desc:'Début obligatoire de tout script',example:'première ligne du script'},
+  {id:'scr-4',section:'scripts',cmd:'nom="valeur"',desc:'Créer une variable',example:'age=17'},
+  {id:'scr-5',section:'scripts',cmd:'echo $nom',desc:'Utiliser une variable',example:'echo $age → 17'},
+  {id:'scr-6',section:'scripts',cmd:'if [ ] then fi',desc:'Condition',example:'if [ $age -ge 18 ]'},
+  {id:'scr-7',section:'scripts',cmd:'for i in liste',desc:'Boucle for',example:'for i in 1 2 3'},
+  {id:'scr-8',section:'scripts',cmd:'while [ condition ]',desc:'Boucle while',example:'while [ $i -lt 10 ]'},
+  {id:'scr-9',section:'scripts',cmd:'read variable',desc:'Demander une entrée utilisateur',example:'read nom'},
+  {id:'scr-10',section:'scripts',cmd:'commande1 | commande2',desc:'Pipe — relier deux commandes',example:'ls | grep fichier'},
+
+  {id:'cmp-1',section:'comparisons',cmd:'-eq',desc:'Égal à',example:'[ $a -eq $b ]'},
+  {id:'cmp-2',section:'comparisons',cmd:'-ne',desc:'Différent de',example:'[ $a -ne $b ]'},
+  {id:'cmp-3',section:'comparisons',cmd:'-gt',desc:'Supérieur à',example:'[ $a -gt $b ]'},
+  {id:'cmp-4',section:'comparisons',cmd:'-lt',desc:'Inférieur à',example:'[ $a -lt $b ]'},
+  {id:'cmp-5',section:'comparisons',cmd:'-ge',desc:'Supérieur ou égal à',example:'[ $a -ge $b ]'},
+  {id:'cmp-6',section:'comparisons',cmd:'-le',desc:'Inférieur ou égal à',example:'[ $a -le $b ]'},
+
+  {id:'hidden-1',section:'hidden-files',cmd:'ls -a',desc:'Voir les fichiers cachés',example:'.bashrc .ssh …'},
+  {id:'hidden-2',section:'hidden-files',cmd:'ls -la',desc:'Voir cachés avec détails',example:'permissions taille date'},
+  {id:'hidden-3',section:'hidden-files',cmd:'touch .nom',desc:'Créer un fichier caché',example:'touch .secret.txt'},
+  {id:'hidden-4',section:'hidden-files',cmd:'mkdir .nom',desc:'Créer un dossier caché',example:'mkdir .cache'},
+  {id:'hidden-5',section:'hidden-files',cmd:'mv fichier .fichier',desc:'Cacher un fichier existant',example:'mv notes.txt .notes.txt'},
+  {id:'hidden-6',section:'hidden-files',cmd:'find / -name ".*"',desc:'Chercher tous les fichiers cachés',example:'find /home -name ".*"'},
+
+  {id:'backup-1',section:'backup',cmd:'cp -r dossier backup',desc:'Sauvegarder un dossier',example:'cp -r Documents backup/'},
+  {id:'backup-2',section:'backup',cmd:'tar -cvf archive.tar',desc:'Créer une archive',example:'tar -cvf backup.tar dossier/'},
+  {id:'backup-3',section:'backup',cmd:'tar -xvf archive.tar',desc:'Extraire une archive',example:'tar -xvf backup.tar'},
+  {id:'backup-4',section:'backup',cmd:'tar -czvf archive.tar.gz',desc:'Créer archive compressée',example:'tar -czvf backup.tar.gz dossier/'},
+  {id:'backup-5',section:'backup',cmd:'tar -xzvf archive.tar.gz',desc:'Extraire archive compressée',example:'tar -xzvf backup.tar.gz'},
+  {id:'backup-6',section:'backup',cmd:'zip -r archive.zip',desc:'Créer un zip',example:'zip -r backup.zip dossier/'},
+  {id:'backup-7',section:'backup',cmd:'unzip archive.zip',desc:'Extraire un zip',example:'unzip backup.zip'},
+  {id:'backup-8',section:'backup',cmd:'rsync -av src dest',desc:'Synchroniser deux dossiers',example:'rsync -av docs/ backup/'},
+
+  {id:'advsearch-1',section:'advanced-search',cmd:'find / -name "*.txt"',desc:'Chercher par extension',example:'find / -name "*.log"'},
+  {id:'advsearch-2',section:'advanced-search',cmd:'find / -type f',desc:'Chercher seulement les fichiers',example:'find /home -type f'},
+  {id:'advsearch-3',section:'advanced-search',cmd:'find / -type d',desc:'Chercher seulement les dossiers',example:'find /home -type d'},
+  {id:'advsearch-4',section:'advanced-search',cmd:'find / -size +100M',desc:'Chercher fichiers volumineux',example:'find / -size +500M'},
+  {id:'advsearch-5',section:'advanced-search',cmd:'grep -r "mot" dossier',desc:'Chercher un mot dans tous les fichiers',example:'grep -r "password" /etc/'},
+  {id:'advsearch-6',section:'advanced-search',cmd:'grep -i "mot" fichier',desc:'Chercher sans tenir compte majuscules',example:'grep -i "admin" fichier.txt'},
+  {id:'advsearch-7',section:'advanced-search',cmd:'grep -v "mot" fichier',desc:'Exclure les lignes contenant le mot',example:'grep -v "erreur" log.txt'},
+  {id:'advsearch-8',section:'advanced-search',cmd:'grep -n "mot" fichier',desc:'Chercher avec numéro de ligne',example:'grep -n "root" /etc/passwd'},
+
+  {id:'fileedit-1',section:'file-edit',cmd:'cat fichier',desc:'Lire un fichier entier',example:'cat fichier.txt'},
+  {id:'fileedit-2',section:'file-edit',cmd:'less fichier',desc:'Lire page par page (q pour quitter)',example:'less fichier.txt'},
+  {id:'fileedit-3',section:'file-edit',cmd:'more fichier',desc:'Lire page par page simple',example:'more fichier.txt'},
+  {id:'fileedit-4',section:'file-edit',cmd:'head -n 20 fichier',desc:'Voir les 20 premières lignes',example:'head -n 20 fichier.txt'},
+  {id:'fileedit-5',section:'file-edit',cmd:'tail -n 20 fichier',desc:'Voir les 20 dernières lignes',example:'tail -n 20 fichier.txt'},
+  {id:'fileedit-6',section:'file-edit',cmd:'tail -f fichier',desc:'Suivre un fichier en temps réel',example:'tail -f /var/log/syslog'},
+  {id:'fileedit-7',section:'file-edit',cmd:'diff fichier1 fichier2',desc:'Comparer deux fichiers',example:'diff ancien.txt nouveau.txt'},
+  {id:'fileedit-8',section:'file-edit',cmd:'sort fichier',desc:'Trier les lignes d\'un fichier',example:'sort liste.txt'},
+  {id:'fileedit-9',section:'file-edit',cmd:'uniq fichier',desc:'Supprimer les doublons',example:'sort liste.txt | uniq'},
+  {id:'fileedit-10',section:'file-edit',cmd:'cut -d: -f1 fichier',desc:'Extraire une colonne',example:'cut -d: -f1 /etc/passwd'},
+  {id:'fileedit-11',section:'file-edit',cmd:"sed 's/ancien/nouveau/' f",desc:'Remplacer du texte',example:"sed 's/admin/root/' fichier.txt"},
+  {id:'fileedit-12',section:'file-edit',cmd:"awk '{print $1}' fichier",desc:'Extraire la première colonne',example:"awk '{print $1}' log.txt"},
+
+  {id:'users-1',section:'users-groups',cmd:'whoami',desc:'Voir mon nom d\'utilisateur',example:'→ kali'},
+  {id:'users-2',section:'users-groups',cmd:'id',desc:'Voir mon identifiant et groupe',example:'→ uid=1000(kali)'},
+  {id:'users-3',section:'users-groups',cmd:'who',desc:'Voir qui est connecté',example:'→ kali tty1'},
+  {id:'users-4',section:'users-groups',cmd:'passwd',desc:'Changer mon mot de passe',example:'passwd'},
+  {id:'users-5',section:'users-groups',cmd:'adduser nom',desc:'Créer un utilisateur',example:'sudo adduser hacker'},
+  {id:'users-6',section:'users-groups',cmd:'deluser nom',desc:'Supprimer un utilisateur',example:'sudo deluser hacker'},
+  {id:'users-7',section:'users-groups',cmd:'cat /etc/passwd',desc:'Voir tous les utilisateurs',example:'cat /etc/passwd'},
+  {id:'users-8',section:'users-groups',cmd:'cat /etc/shadow',desc:'Voir les mots de passe hashés',example:'sudo cat /etc/shadow'},
+
+  {id:'proc-1',section:'process-services',cmd:'ps aux',desc:'Voir tous les processus',example:'ps aux'},
+  {id:'proc-2',section:'process-services',cmd:'ps aux | grep nom',desc:'Chercher un processus',example:'ps aux | grep firefox'},
+  {id:'proc-3',section:'process-services',cmd:'kill PID',desc:'Arrêter un processus',example:'kill 1234'},
+  {id:'proc-4',section:'process-services',cmd:'kill -9 PID',desc:'Forcer l\'arrêt d\'un processus',example:'kill -9 1234'},
+  {id:'proc-5',section:'process-services',cmd:'killall nom',desc:'Tuer tous les processus du même nom',example:'killall firefox'},
+  {id:'proc-6',section:'process-services',cmd:'top',desc:'Voir CPU/RAM en temps réel',example:'top'},
+  {id:'proc-7',section:'process-services',cmd:'htop',desc:'Version améliorée de top',example:'htop'},
+  {id:'proc-8',section:'process-services',cmd:'service nom start',desc:'Démarrer un service',example:'service apache2 start'},
+  {id:'proc-9',section:'process-services',cmd:'service nom stop',desc:'Arrêter un service',example:'service apache2 stop'},
+  {id:'proc-10',section:'process-services',cmd:'systemctl status nom',desc:'Voir l\'état d\'un service',example:'systemctl status ssh'},
+
+  {id:'netadv-1',section:'network-advanced',cmd:'ifconfig',desc:'Voir mon adresse IP',example:'→ inet 192.168.x.x'},
+  {id:'netadv-2',section:'network-advanced',cmd:'ip a',desc:'Voir les interfaces réseau',example:'ip a'},
+  {id:'netadv-3',section:'network-advanced',cmd:'ping -c 4 adresse',desc:'Envoyer 4 pings',example:'ping -c 4 google.com'},
+  {id:'netadv-4',section:'network-advanced',cmd:'traceroute adresse',desc:'Voir le chemin des paquets',example:'traceroute google.com'},
+  {id:'netadv-5',section:'network-advanced',cmd:'nmap -sV adresse',desc:'Scanner les versions des services',example:'nmap -sV 192.168.1.1'},
+  {id:'netadv-6',section:'network-advanced',cmd:'nmap -A adresse',desc:'Scanner complet agressif',example:'nmap -A 192.168.1.1'},
+  {id:'netadv-7',section:'network-advanced',cmd:'nmap -p 80 adresse',desc:'Scanner un port spécifique',example:'nmap -p 22,80,443 192.168.1.1'},
+  {id:'netadv-8',section:'network-advanced',cmd:'netstat -tulpn',desc:'Voir les ports ouverts',example:'netstat -tulpn'},
+  {id:'netadv-9',section:'network-advanced',cmd:'wget url',desc:'Télécharger un fichier',example:'wget https://site.com/fichier'},
+  {id:'netadv-10',section:'network-advanced',cmd:'curl -I url',desc:'Voir les headers d\'un site',example:'curl -I https://google.com'},
+  {id:'netadv-11',section:'network-advanced',cmd:'ssh user@ip',desc:'Connexion distante',example:'ssh kali@192.168.1.1'},
+  {id:'netadv-12',section:'network-advanced',cmd:'scp fichier user@ip:/dest',desc:'Copier un fichier à distance',example:'scp fichier.txt kali@192.168.1.1:/home/'},
+
+  {id:'env-1',section:'env-vars',cmd:'echo $PATH',desc:'Voir les chemins des programmes',example:'→ /usr/bin:/bin:…'},
+  {id:'env-2',section:'env-vars',cmd:'echo $HOME',desc:'Voir mon dossier personnel',example:'→ /home/kali'},
+  {id:'env-3',section:'env-vars',cmd:'echo $USER',desc:'Voir mon nom d\'utilisateur',example:'→ kali'},
+  {id:'env-4',section:'env-vars',cmd:'export VAR=valeur',desc:'Créer une variable globale',example:'export MON_IP=192.168.1.1'},
+  {id:'env-5',section:'env-vars',cmd:'env',desc:'Voir toutes les variables',example:'env'},
+  {id:'env-6',section:'env-vars',cmd:"alias nom='commande'",desc:'Créer un raccourci de commande',example:"alias ll='ls -la'"},
+
+  {id:'logs-1',section:'logs-monitoring',cmd:'cat /var/log/syslog',desc:'Voir les logs système',example:'cat /var/log/syslog'},
+  {id:'logs-2',section:'logs-monitoring',cmd:'cat /var/log/auth.log',desc:'Voir les logs de connexion',example:'sudo cat /var/log/auth.log'},
+  {id:'logs-3',section:'logs-monitoring',cmd:'tail -f /var/log/syslog',desc:'Suivre les logs en direct',example:'tail -f /var/log/syslog'},
+  {id:'logs-4',section:'logs-monitoring',cmd:'dmesg',desc:'Voir les messages du noyau',example:'dmesg | tail'},
+  {id:'logs-5',section:'logs-monitoring',cmd:'last',desc:'Voir les dernières connexions',example:'last'},
+  {id:'logs-6',section:'logs-monitoring',cmd:'history -c',desc:'Effacer l\'historique des commandes',example:'history -c'}
+];
+
+/* ==============================================================
+   BUILD UI
+   ============================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const tocList         = document.getElementById('toc-list');
+  const sectionsRoot    = document.getElementById('sections');
+  const toast           = document.getElementById('toast');
+  const resultInfo      = document.getElementById('result-info');
+  const searchInput     = document.getElementById('search');
+  const favOnlyCheckbox = document.getElementById('fav-only');
+  const favLabel        = document.getElementById('fav-label');
+  const backTopBtn      = document.getElementById('back-top');
+  const themeSelect     = document.getElementById('theme-select');
+
+  const allCards = [];
+
+  /* ── FIX 1 — TOC avec groupes ──────────────────────── */
+  const groups = {};
+  sections.forEach(sec => {
+    if (!groups[sec.group]) groups[sec.group] = [];
+    groups[sec.group].push(sec);
+  });
+
+  Object.entries(groups).forEach(([groupName, secs]) => {
+    const groupEl = document.createElement('li');
+    groupEl.innerHTML = `<div class="toc-group-label">${groupName}</div>`;
+    const ul = document.createElement('ul');
+    secs.forEach(sec => {
+      const li = document.createElement('li');
+      const a  = document.createElement('a');
+      a.href = `#${sec.id}`;
+      a.innerHTML = `<span class="toc-dot"></span>${sec.title}`;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    groupEl.appendChild(ul);
+    tocList.appendChild(groupEl);
+  });
+
+  /* ── Sections + grids ─────────────────────────────── */
+  sections.forEach(sec => {
+    const secEl = document.createElement('section');
+    secEl.id = sec.id;
+    const h2 = document.createElement('h2');
+    h2.textContent = sec.title;
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'copy-section';
+    copyBtn.title = 'Copier toute la section';
+    copyBtn.innerHTML = `<svg viewBox="0 0 24 24" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copier`;
+    h2.appendChild(copyBtn);
+    secEl.appendChild(h2);
+    const grid = document.createElement('div');
+    grid.className = 'cmd-grid';
+    secEl.appendChild(grid);
+    sectionsRoot.appendChild(secEl);
+  });
+
+  /* ── Cards ────────────────────────────────────────── */
+  const normalizeString = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+
+  commands.forEach(item => {
+    const secEl = document.getElementById(item.section);
+    if (!secEl) return;
+    const grid = secEl.querySelector('.cmd-grid');
+
+    const cardType = getCardType(item.cmd, item.section);
+    const typeInfo = TYPE_COLORS[cardType];
+
+    const card = document.createElement('div');
+    card.className = 'cmd-card' + (typeInfo.cls ? ' '+typeInfo.cls : '');
+    card.dataset.id         = item.id;
+    card.dataset.cmd        = item.cmd;
+    card.dataset.section    = item.section;
+    card.dataset.originalCmd  = item.cmd;
+    card.dataset.originalDesc = item.desc;
+    card.dataset.normCmd    = normalizeString(item.cmd);
+    card.dataset.normDesc   = normalizeString(item.desc);
+
+    /* badge type si pas nav/default */
+    if (typeInfo.label && BADGE_STYLES[cardType]) {
+      const badge = document.createElement('span');
+      badge.className = 'cmd-type-badge';
+      badge.style.cssText = BADGE_STYLES[cardType];
+      badge.textContent = typeInfo.label;
+      card.appendChild(badge);
+    }
+
+    /* ligne du haut : [texte cmd + icône copie collée] ··spacer·· [étoile] */
+    const cmdRow = document.createElement('div');
+    cmdRow.className = 'cmd-row';
+
+    /* groupe gauche : texte + icône copie collée */
+    const cmd = document.createElement('button');
+    cmd.className = 'cmd';
+    cmd.type = 'button';
+    cmd.title = 'Copier';
+    cmd.style.color = typeInfo.color;
+    const cmdTxt = document.createElement('span');
+    cmdTxt.className = 'cmd-text';
+    cmdTxt.textContent = item.cmd;
+    cmd.appendChild(cmdTxt);
+    cmd.insertAdjacentHTML('beforeend',
+      `<svg class="icon-copy" viewBox="0 0 24 24" stroke-width="2" fill="none">
+        <rect x="9" y="9" width="13" height="13" rx="2"/>
+        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+      </svg>`);
+    cmdRow.appendChild(cmd);
+    const spacer = document.createElement('span');
+    spacer.className = 'spacer';
+    cmdRow.appendChild(spacer);
+
+    /* étoile à droite */
+    const favBtn = document.createElement('button');
+    favBtn.type = 'button';
+    favBtn.className = 'fav-btn';
+    favBtn.setAttribute('aria-pressed','false');
+    favBtn.setAttribute('aria-label','Ajouter aux favoris');
+    favBtn.innerHTML = `<svg viewBox="0 0 24 24" class="icon-star" stroke-width="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+    cmdRow.appendChild(favBtn);
+
+    card.appendChild(cmdRow);
+
+    const desc = document.createElement('span');
+    desc.className = 'desc';
+    desc.textContent = item.desc;
+    const ex = document.createElement('span');
+    ex.className = 'example';
+    ex.textContent = item.example;
+    card.appendChild(desc);
+    card.appendChild(ex);
+
+    grid.appendChild(card);
+    allCards.push(card);
+  });
+
+  /* ── Favorites ────────────────────────────────────── */
+  let favorites = [];
+  try { favorites = JSON.parse(localStorage.getItem('favorites') || '[]'); } catch(e){}
+
+  const updateFavUI = () => {
+    allCards.forEach(card => {
+      const isFav = favorites.includes(card.dataset.id);
+      const btn = card.querySelector('.fav-btn');
+      btn.classList.toggle('favorited', isFav);
+      btn.setAttribute('aria-pressed', String(isFav));
+      btn.setAttribute('aria-label', isFav ? 'Retirer des favoris' : 'Ajouter aux favoris');
+      card.classList.toggle('favorite', isFav);
+    });
+  };
+  updateFavUI();
+
+  /* FIX 5 — état visuel du toggle favoris */
+  const updateFavToggle = () => {
+    favLabel.classList.toggle('active', favOnlyCheckbox.checked);
+  };
+
+  /* ── Toast ────────────────────────────────────────── */
+  let toastTimer;
+  const showToast = (msg, error=false) => {
+    clearTimeout(toastTimer);
+    toast.textContent = msg;
+    toast.className = error ? 'show error' : 'show';
+    toastTimer = setTimeout(() => toast.className = '', 1800);
+  };
+
+  /* ── Clipboard ────────────────────────────────────── */
+  async function copyToClipboard(text){
+    if (navigator.clipboard?.writeText){
+      try { await navigator.clipboard.writeText(text); return true; } catch(e){}
+    }
+    const ta = Object.assign(document.createElement('textarea'),{value:text,style:'position:fixed;left:-9999px'});
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  /* ── Highlight ────────────────────────────────────── */
+  const escRE = str => str.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  function highlightSafe(el, original, term){
+    if (!term){ el.textContent = original; return; }
+    const normOrig = normalizeString(original);
+    const normTerm = normalizeString(term);
+    const map = [];
+    for(let i=0;i<original.length;i++){
+      const b = original[i].normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if (b) map.push(i);
+    }
+    const re = new RegExp(escRE(normTerm),'gi');
+    const frag = document.createDocumentFragment();
+    let last=0, m;
+    while((m=re.exec(normOrig))!==null){
+      const s0=map[m.index], e0=(map[m.index+normTerm.length-1]??original.length-1)+1;
+      if(s0>last) frag.appendChild(document.createTextNode(original.slice(last,s0)));
+      const mk=document.createElement('mark'); mk.textContent=original.slice(s0,e0);
+      frag.appendChild(mk); last=e0;
+    }
+    if(last<original.length) frag.appendChild(document.createTextNode(original.slice(last)));
+    el.innerHTML=''; el.appendChild(frag);
+  }
+
+  /* ── Filter ───────────────────────────────────────── */
+  let lastTerm='';
+  const filterCards = () => {
+    const rawTerm = searchInput.value.trim();
+    const term = normalizeString(rawTerm);
+    const onlyFav = favOnlyCheckbox.checked;
+    let count=0;
+    allCards.forEach(card => {
+      const ok = (!term || card.dataset.normCmd.includes(term) || card.dataset.normDesc.includes(term))
+               && (!onlyFav || favorites.includes(card.dataset.id));
+      card.style.display = ok ? '' : 'none';
+      if (!ok) return;
+      count++;
+      const cmdEl = card.querySelector('.cmd-text');
+      const descEl = card.querySelector('.desc');
+      rawTerm ? (highlightSafe(cmdEl,card.dataset.originalCmd,rawTerm), highlightSafe(descEl,card.dataset.originalDesc,rawTerm))
+              : (cmdEl.textContent=card.dataset.originalCmd, descEl.textContent=card.dataset.originalDesc);
+    });
+    resultInfo.textContent = `${count} commande${count!==1?'s':''}`;
+    lastTerm=term;
+  };
+
+  const debounce=(fn,d=150)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),d);}};
+  const runFilter = debounce(filterCards,150);
+
+  searchInput.addEventListener('input', runFilter);
+  favOnlyCheckbox.addEventListener('change', ()=>{ updateFavToggle(); filterCards(); });
+
+  /* ── Copy section ─────────────────────────────────── */
+  document.querySelectorAll('.copy-section').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const sec = btn.closest('section');
+      const lines = [...sec.querySelectorAll('.cmd-text')].map(e=>e.textContent).join('\n');
+      const ok = await copyToClipboard(lines);
+      showToast(ok ? `Section "${sec.querySelector('h2').firstChild.textContent.trim()}" copiée` : 'Échec', !ok);
+    });
+  });
+
+  /* ── Delegation: copy + fav ───────────────────────── */
+  sectionsRoot.addEventListener('click', async e => {
+    const card = e.target.closest('.cmd-card');
+    if (!card) return;
+    if (e.target.closest('.fav-btn')){
+      const id = card.dataset.id;
+      const btn = card.querySelector('.fav-btn');
+      favorites = favorites.includes(id) ? favorites.filter(f=>f!==id) : [...favorites, id];
+      try { localStorage.setItem('favorites', JSON.stringify(favorites)); } catch(e){}
+      /* FIX 3 — animation pop */
+      btn.classList.remove('pop');
+      void btn.offsetWidth;
+      btn.classList.add('pop');
+      btn.addEventListener('animationend', ()=>btn.classList.remove('pop'), {once:true});
+      updateFavUI();
+      filterCards();
+      showToast(favorites.includes(id) ? '★ Ajouté aux favoris' : 'Retiré des favoris');
+      return;
+    }
+    if (e.target.closest('.cmd') && !e.target.closest('.fav-btn')){
+      const ok = await copyToClipboard(card.dataset.cmd);
+      showToast(ok ? `"${card.dataset.cmd}" copié !` : 'Échec de la copie', !ok);
+    }
+  });
+
+  /* ── Fade-in observer ─────────────────────────────── */
+  const fadeObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); fadeObs.unobserve(e.target); }});
+  },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
+  allCards.forEach(c=>fadeObs.observe(c));
+
+  /* ── Scroll-spy ───────────────────────────────────── */
+  const tocLinks={};
+  document.querySelectorAll('.toc a').forEach(a=>{
+    tocLinks[a.getAttribute('href').slice(1)]=a;
+  });
+  let activeToc=null;
+  const secObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        if(activeToc) activeToc.classList.remove('active');
+        const l=tocLinks[e.target.id];
+        if(l){ l.classList.add('active'); activeToc=l; }
+      }
+    });
+  },{rootMargin:'-20% 0px -60% 0px', threshold:.15});
+  document.querySelectorAll('main > section').forEach(s=>secObs.observe(s));
+
+  /* ── Back to top ──────────────────────────────────── */
+  window.addEventListener('scroll',()=>{ backTopBtn.classList.toggle('show', window.scrollY>300); });
+  backTopBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+  /* ── Theme ────────────────────────────────────────── */
+  const applyTheme = mode=>{
+    mode==='system' ? document.documentElement.removeAttribute('data-theme')
+                    : document.documentElement.setAttribute('data-theme',mode);
+    themeSelect.value=mode;
+    try { localStorage.setItem('theme',mode); } catch(e){}
+  };
+  let savedTheme='system';
+  try { savedTheme=localStorage.getItem('theme')||'system'; } catch(e){}
+  applyTheme(savedTheme);
+  themeSelect.addEventListener('change',()=>applyTheme(themeSelect.value));
+
+  /* ── Ctrl+K ───────────────────────────────────────── */
+  document.addEventListener('keydown', e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); searchInput.focus(); }
+  });
+
+  filterCards();
+  updateFavToggle();
+});
+</script>
+</body>
+</html>
